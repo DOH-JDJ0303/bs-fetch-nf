@@ -1,4 +1,4 @@
-process BS_FETCH_SAMPLE {
+process BS_FETCH_BIOSAMPLE {
     container 'theiagen/basespace_cli:1.2.1'
     publishDir "$params.outdir/reads"
 

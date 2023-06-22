@@ -19,7 +19,7 @@
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { BS_FETCH_MYCOSNP } from '../subworkflows/local/bs_fetch_mycosnp'
+include { BS_FETCH_GENERIC } from '../subworkflows/local/bs_fetch_generic'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,9 +54,9 @@ workflow BSFETCH {
     //
     // SUBWORKFLOW: Download reads and format for MycoSNP
     //
-    if (params.pipeline == "mycosnp"){
+    if (params.pipeline == "generic" || params.pipeline == "mycosnp" || params.pipeline == "phoenix"){
 
-        BS_FETCH_MYCOSNP (
+        BS_FETCH_GENERIC (
             samples
         )
     }

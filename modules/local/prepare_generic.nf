@@ -1,5 +1,4 @@
-process PREPARE_MYCOSNP {
-    container 'theiagen/basespace_cli:1.2.1'
+process PREPARE_GENERIC {
     publishDir "$params.outdir"
 
     input:
