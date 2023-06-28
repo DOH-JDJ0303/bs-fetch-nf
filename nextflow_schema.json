@@ -10,7 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": ["input", "outdir", "access_token"],
             "properties": {
                 "input": {
                     "type": "string",
@@ -27,6 +27,26 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "access_token": {
+                    "type": "string",
+                    "default": "None",
+                    "description": "Illumina BaseSpace access token"
+                },
+                "api_server": {
+                    "type": "string",
+                    "default": "https://api.basespace.illumina.com",
+                    "description": "Illumina BaseSpace API server"
+                },
+                "batch_type": {
+                    "type": "string",
+                    "default": "biosample",
+                    "description": "Sample input type ('biosample' or 'dataset')"
+                },
+                "pipeline": {
+                    "type": "string",
+                    "default": "generic",
+                    "description": "Pipeline to format the manifest file for. 'generic' is currently the only option and works for MycoSNP and PHoeNIx."
                 },
                 "email": {
                     "type": "string",
@@ -212,23 +232,5 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ],
-    "properties": {
-        "api_server": {
-            "type": "string",
-            "default": "https://api.basespace.illumina.com"
-        },
-        "access_token": {
-            "type": "string",
-            "default": "None"
-        },
-        "batch_type": {
-            "type": "string",
-            "default": "biosample"
-        },
-        "pipeline": {
-            "type": "string",
-            "default": "generic"
-        }
-    }
+    ]
 }
