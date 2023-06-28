@@ -3,7 +3,7 @@ process BS_FETCH_DATASET {
     publishDir "$params.outdir/reads"
 
     input:
-    val(dataset)
+    tuple val(dataset)
 
     output:
     tuple file('*.fastq.gz'), emit: reads
