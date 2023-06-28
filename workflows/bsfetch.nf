@@ -19,7 +19,8 @@
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { BS_FETCH_GENERIC } from '../subworkflows/local/bs_fetch_generic'
+include { FETCH_READS } from '../subworkflows/local/fetch_reads'
+include { PREPARE_MANIFEST } from '../subworkflows/local/prepare_manifest'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,18 +53,22 @@ workflow BSFETCH {
         .set { samples }
 
     //
-    // SUBWORKFLOW: Download reads and format for MycoSNP
+    // SUBWORKFLOW: Download reads from Illumina BaseSapce
     //
-    if (params.pipeline == "generic" || params.pipeline == "mycosnp" || params.pipeline == "phoenix"){
+    FETCH_READS (
+        samples
+    )
+    ch_versions = ch_versions.mix(FETCH_READS.out.versions)
 
-        BS_FETCH_GENERIC (
-            samples
-        )
-    }
+    PREPARE_MANIFEST(
+        FETCH_READS.out.reads
+    )
+    ch_versions = ch_versions.mix(PREPARE_MANIFEST.out.versions)
 
-   // CUSTOM_DUMPSOFTWAREVERSIONS (
-   //     ch_versions.unique().collectFile(name: 'collated_versions.yml')
-   // )
+
+    CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
+    )
 }
 
 /*
