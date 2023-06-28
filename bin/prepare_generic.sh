@@ -13,8 +13,10 @@ echo "sample,fastq_1,fastq_2" > manifest.csv
 samples=$(cat all_reads | cut -f 1 | sort | uniq)
 for s in ${samples}
 do
-    read_line=$(cat all_reads | awk -v s=${s} '$1 == s {print $2,$3}' | tr '\n' ',' | tr -d '\n\t\r ')
-    echo "${s},${outdir%/}/reads/${read_line%,}" >> manifest.csv
+
+    reads_line=$(cat all_reads | awk -v s="${s}" -v o="${outdir%/}" '$1 == s {print o"/reads/"$2}' | sort | tr '\n' ',' | tr -d '\n\t\r ')
+    echo "${s},${reads_line%,}" >> manifest.csv
+
 done
 
 cat manifest.csv

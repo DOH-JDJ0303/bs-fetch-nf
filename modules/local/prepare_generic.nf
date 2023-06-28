@@ -13,6 +13,6 @@ process PREPARE_GENERIC {
 
     shell: // This script is bundled with the pipeline, in nf-core/bsfetch/bin/
     '''
-    bash prepare_mycosnp.sh "!{reads}" "!{params.outdir}"
+    bash prepare_generic.sh "!{reads}" "!{params.outdir}"
     '''
 }
