@@ -1,5 +1,6 @@
 process PREPARE_GENERIC {
     publishDir "$params.outdir"
+    container "ubuntu:jammy"
 
     input:
     val reads
