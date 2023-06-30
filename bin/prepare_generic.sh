@@ -9,7 +9,7 @@ else
     reads=$1
     outdir=$2
 
-    echo ${reads} | tr -d '[] ' | tr ',' '\n' | sed 's/.*\///g' > r_col
+    echo ${reads} | tr -d '[] ' | tr ',' '\n' | sed 's/.*\///g' | sort | uniq > r_col
 
     cat r_col | sed -r 's/_S[0-9]+_L[0-9]+_R[12]_001.fastq.gz//g' > n_col
 

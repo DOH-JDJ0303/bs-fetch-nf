@@ -4,7 +4,7 @@
 
 include { BS_FETCH_BIOSAMPLE } from '../../modules/local/bs_fetch_biosample'
 include { BS_FETCH_DATASET   } from '../../modules/local/bs_fetch_dataset'
-include { BS_FETCH_FILE_ID   } from '../../modules/local/bs_fetch_dataset'
+include { BS_FETCH_FILE_ID   } from '../../modules/local/bs_fetch_file_id'
 
 workflow FETCH_READS {
     take:
