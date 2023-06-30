@@ -10,7 +10,8 @@ workflow PREPARE_MANIFEST {
 
     main:
     ch_versions = Channel.empty() // Used to collect the software versions
-
+    
+    // Generic manifest file - this works for PHoeNIx and MycoSNP
     if (params.pipeline == "generic" || params.pipeline == "mycosnp" || params.pipeline == "phoenix") {
 
         PREPARE_GENERIC ( 
