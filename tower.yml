@@ -1,3 +1,6 @@
 reports:
-  manifest.csv:
-    display: "Manifest file"
+  "**/manifest.csv":
+    display: "Manifest file":
+  "**/reads/*":
+    display: "Raw Sequence Reads"
+

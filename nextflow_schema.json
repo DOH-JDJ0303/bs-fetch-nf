@@ -38,16 +38,6 @@
                     "default": "https://api.basespace.illumina.com",
                     "description": "Illumina BaseSpace API server"
                 },
-                "batch_type": {
-                    "type": "string",
-                    "default": "biosample",
-                    "description": "Sample input type ('biosample' or 'dataset')"
-                },
-                "pipeline": {
-                    "type": "string",
-                    "default": "generic",
-                    "description": "Pipeline to format the manifest file for. 'generic' is currently the only option and works for MycoSNP and PHoeNIx."
-                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
@@ -232,5 +222,15 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "input_format": {
+            "type": "string",
+            "default": "biosample"
+        },
+        "output_format": {
+            "type": "string",
+            "default": "generic"
+        }
+    }
 }

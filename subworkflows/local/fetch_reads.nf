@@ -13,7 +13,7 @@ workflow FETCH_READS {
     main:
     ch_versions = Channel.empty() // Used to collect the software versions
     // Download by biosample name
-    if (params.batch_type == "biosample") {
+    if (params.input_format == "biosample") {
         BS_FETCH_BIOSAMPLE (
             samples
         )
@@ -26,7 +26,7 @@ workflow FETCH_READS {
             .set { reads }
     }
     // Download by dataset name
-    if (params.batch_type == "dataset") {
+    if (params.input_format == "dataset") {
         
         BS_FETCH_DATASET (
             samples
@@ -40,7 +40,7 @@ workflow FETCH_READS {
              .set { reads }
     }
     // Download by file ID
-    if (params.batch_type == "file_id") {
+    if (params.input_format == "file_id") {
         
         BS_FETCH_FILE_ID (
             samples
