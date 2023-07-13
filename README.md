@@ -35,16 +35,22 @@ nextflow run DOH-JDJ0303/bs-fetch-nf \
 
 ### Argument Descriptions
 #### Required
-`--input`	file containing biosamples names, dataset names, or file IDs
-`--output` absolute path to where the outputs should be saved
+`--input`	file containing biosamples names, dataset names, or file IDs \
+`--output` absolute path to where the outputs should be saved \
 `--access_token` your Illumina BaseSpace access token
 #### Optional
-`--input_format` the input format (i.e., 'biosample', 'dataset', 'id'; default: 'biosample')
-`--output_format` the format of the manifest file (i.e., 'generic', 'mycosnp', 'phoenix'; default: 'generic')
+`--input_format` the input format (i.e., 'biosample', 'dataset', 'id'; default: 'biosample') \
+`--output_format` the format of the manifest file (i.e., 'generic', 'mycosnp', 'phoenix'; default: 'generic') \
 `--api_server` your Illumina BaseSpace API server path (default: 'https://api.basespace.illumina.com')
 
 ## Pipeline output
-There is currently only one manifest format supported (see example below). This format can be used for the CDC MycoSNP and PHoeNIx pipelines.
+This pipeline generates two main outputs:
+1.  The reads downloaded from BaseSpace. These are saved in a subdirectory of the specified output directory called `reads/`.
+2.  A manifest file in the specified format saved in the specified output directory. \
+
+Note: There is currently only one manifest format supported (see example below). This format can be used for the CDC MycoSNP and PHoeNIx pipelines. \
+
+#### Output Format 1: 'generic', 'mycosnp', and 'phoenix'
 ```
 sample,fastq_1,fastq_2
 isolate1,s3://my-bucket/mycosnp/run1/reads/isolate1_R1_001.fastq.gz,s3://my-bucket/mycosnp/run1/reads/isolate1_R2_001.fastq.gz
