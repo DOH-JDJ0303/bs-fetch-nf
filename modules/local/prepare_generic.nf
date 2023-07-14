@@ -11,7 +11,7 @@ process PREPARE_GENERIC {
 
     shell: // This script is bundled with the pipeline, in nf-core/bsfetch/bin/
     '''
-    prepare_generic.sh "!{reads}" "!{params.outdir}"
+    prepare_generic.sh "!{reads}" "!{params.outdir}/!{params.run_name}"
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":
