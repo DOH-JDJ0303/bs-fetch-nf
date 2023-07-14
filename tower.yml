@@ -1,6 +1,6 @@
 reports:
   "**/manifest.csv":
-    display: "Manifest file":
+    display: "Manifest file"
   "**/reads/*":
     display: "Raw Sequence Reads"
 
