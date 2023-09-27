@@ -31,6 +31,15 @@ WorkflowMain.initialise(workflow, params, log)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { BS_INSPECT } from './workflows/inspect'
+
+//
+// WORKFLOW: Run biosample inspection pipeline
+//
+workflow INSPECT {
+    BS_INSPECT ()
+}
+
 include { BSFETCH } from './workflows/bsfetch'
 
 //
