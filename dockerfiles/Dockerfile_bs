@@ -36,9 +36,9 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     tar \
     gzip \
     curl \
-    wget \
+    wget && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
 
 # install bs
-wget "https://launch.basespace.illumina.com/CLI/latest/amd64-linux/bs" -O $HOME/bin/bs && export PATH="$HOME/bin/:$PATH"
+RUN wget "https://launch.basespace.illumina.com/CLI/latest/amd64-linux/bs" -O /usr/local/bin/bs && chmod +x /usr/local/bin/bs
