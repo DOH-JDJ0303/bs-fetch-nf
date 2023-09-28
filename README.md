@@ -39,7 +39,7 @@ nextflow run DOH-JDJ0303/bs-fetch-nf \
 `--output` absolute path to where the outputs should be saved \
 `--access_token` your Illumina BaseSpace access token
 #### Optional
-`--input_format` the input format (i.e., 'biosample', 'dataset', 'id'; default: 'biosample') \
+`--input_format` the input format (i.e., 'biosample', 'dataset', 'file_id'; default: 'biosample') \
 `--output_format` the format of the manifest file (i.e., 'generic', 'mycosnp', 'phoenix'; default: 'generic') \
 `--api_server` your Illumina BaseSpace API server path (default: 'https://api.basespace.illumina.com')
 
