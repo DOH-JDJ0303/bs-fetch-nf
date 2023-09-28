@@ -32,11 +32,13 @@
                 },
                 "input_format": {
                     "type": "string",
-                    "default": "biosample"
+                    "default": "biosample",
+                    "description": "options: 'biosample', 'file_id', or 'dataset'"
                 },
                 "output_format": {
                     "type": "string",
-                    "default": "generic"
+                    "default": "generic",
+                    "description": "options: 'generic', 'mycosnp', or 'phoenix'"
                 },
                 "outdir": {
                     "type": "string",
