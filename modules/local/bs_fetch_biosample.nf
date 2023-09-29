@@ -1,6 +1,7 @@
 process BS_FETCH_BIOSAMPLE {
     input:
     tuple val(biosample)
+    label 'process_high'
 
     output:
     path "*.fastq.gz"       , emit: reads

@@ -1,6 +1,7 @@
 process BS_FETCH_DATASET {
     input:
     tuple val(dataset)
+    label 'process_high'
 
     output:
     path "*.fastq.gz"       , emit: reads

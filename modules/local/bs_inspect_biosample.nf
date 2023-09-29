@@ -1,6 +1,7 @@
 process BS_INSPECT_BIOSAMPLE {
     input:
     tuple val(biosample)
+    label 'process_high'
 
     output:
     path "*.csv"       , emit: result
