@@ -1,7 +1,9 @@
 process BS_INSPECT_BIOSAMPLE {
+    label 'process_low'
+    tag "${biosample}"
+
     input:
     tuple val(biosample)
-    label 'process_high'
 
     output:
     path "*.csv"       , emit: result
@@ -16,7 +18,7 @@ process BS_INSPECT_BIOSAMPLE {
     echo !{biosample} > BIOSAMPLE
 
     # run bs-inspect.sh script
-    bs-inspect.sh \
+    inspect-biosample.sh \
         BIOSAMPLE \
         !{params.access_token} \
         !{params.api_server}

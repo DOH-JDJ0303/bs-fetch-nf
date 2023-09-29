@@ -1,7 +1,9 @@
 process BS_FETCH_FILE_ID {
+    label 'process_low'
+    tag "${id}"
+
     input:
     tuple val(id)
-    label 'process_high'
 
     output:
     path "*.fastq.gz"       , emit: reads
