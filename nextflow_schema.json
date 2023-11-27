@@ -10,12 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": [
-                "input",
-                "outdir",
-                "access_token",
-                "run_name"
-            ],
+            "required": ["input", "outdir", "access_token", "run_name"],
             "properties": {
                 "run_name": {
                     "type": "string"
@@ -55,6 +50,12 @@
                     "type": "string",
                     "default": "https://api.basespace.illumina.com",
                     "description": "Illumina BaseSpace API server"
+                },
+                "ncbi_bucket": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Path to a Google or AWS cloud bucket that can be used for NCBI uploads. Read names will be reformated so that all text following the underscore is removed.",
+                    "default": "None"
                 },
                 "email": {
                     "type": "string",
@@ -174,14 +175,7 @@
                     "description": "Method used to save pipeline results to output directory.",
                     "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
                     "fa_icon": "fas fa-copy",
-                    "enum": [
-                        "symlink",
-                        "rellink",
-                        "link",
-                        "copy",
-                        "copyNoFollow",
-                        "move"
-                    ],
+                    "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
                     "hidden": true
                 },
                 "email_on_fail": {
