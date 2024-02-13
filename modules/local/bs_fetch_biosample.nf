@@ -26,7 +26,7 @@ process BS_FETCH_BIOSAMPLE {
     cat content.txt | grep '.gz' | cut -f 2 -d ' ' | tr -d '\t ' | awk -v s=!{biosample} '{print a","$0}' > !{biosample}.csv
 
     # extract newest IDs
-    cat ids.csv | cut -f 2 -d ',' | sed -n 1,2p > newest.csv
+    cat !{biosample}.csv | cut -f 2 -d ',' | sed -n 1,2p > newest.csv
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":
