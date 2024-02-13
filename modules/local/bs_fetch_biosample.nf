@@ -3,24 +3,30 @@ process BS_FETCH_BIOSAMPLE {
     tag "${biosample}"
 
     input:
-    tuple val(biosample)
+    val biosample
 
     output:
-    path "*.fastq.gz"       , emit: reads
-    path "versions.yml"     , emit: versions
+    path "${biosample}.csv",emit: all_ids
+    path "newest.csv",      emit: newest_ids
+    path "versions.yml",    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     shell: // This script is bundled with the pipeline, in nf-core/bsfetch/bin/
     '''
-    bs download biosample \\
+    # get biosample file content
+    bs content biosample \\
         --api-server=!{params.api_server} \\
         --access-token=!{params.access_token} \\
         -n !{biosample} \\
-        -o ./
+        > content.txt
+    
+    # extract file IDs & add biosample name
+    cat content.txt | grep '.gz' | cut -f 2 -d ' ' | tr -d '\t ' | awk -v s=!{biosample} '{print a","$0}' > !{biosample}.csv
 
-    mv */*.fastq.gz ./
+    # extract newest IDs
+    cat ids.csv | cut -f 2 -d ',' | sed -n 1,2p > newest.csv
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":

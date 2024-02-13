@@ -3,7 +3,7 @@ process BS_FETCH_FILE_ID {
     tag "${id}"
 
     input:
-    tuple val(id)
+    val id
 
     output:
     path "*.fastq.gz"       , emit: reads
