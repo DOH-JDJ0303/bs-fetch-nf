@@ -50,6 +50,7 @@ workflow BSFETCH {
     Channel
         .fromPath(params.input)
         .splitCsv(header: false)
+        .map{ it -> it.get(0) }
         .set { samples }
 
     //
