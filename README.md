@@ -11,7 +11,10 @@
 2. creates a manifest file containing information about the newly downloaded reads in a desired format.
 
 ## Usage
-### Step 1. Prepare the input file
+### Step 1. Clone the repository 
+```git clone https://github.com/DOH-JDJ0303/bs-fetch-nf
+```
+### Step 2. Prepare the input file and save as a .csv
 Prepare a file containg a list of Illumina biosample names, dataset names, or file IDs. Each name or ID should be listed on a new line (see example below).
 ```
 isolate1
@@ -20,14 +23,15 @@ isolate3
 isolate4
 ```
 
-### Step 2. Run the pipeline
-Run the pipeline use the general command structure below:
+### Step 3. Run the pipeline
+From your local repository run the pipeline using the general command structure below:
 
 ```
-nextflow run DOH-JDJ0303/bs-fetch-nf \
-    -profile singularity \
-    --input samples.tsv \
+nextflow run main.nf \
+    -profile docker \
+    --input samples.csv \
     --output 's3://my-bucket/mycosnp/run1/' \
+    --run_name 'test_fetch'
     --access_token '312g4hjgj12hjj1hg43hj12gj3h' \
     --input_format 'biosample' \
     --output_format 'generic'
@@ -35,8 +39,9 @@ nextflow run DOH-JDJ0303/bs-fetch-nf \
 
 ### Argument Descriptions
 #### Required
-`--input`	file containing biosamples names, dataset names, or file IDs \
+`--input`	file containing biosamples names, dataset names, or file IDs. must be .csv \
 `--output` absolute path to where the outputs should be saved \
+`--run_name` your designated run name (output directory will be created with this name)
 `--access_token` your Illumina BaseSpace access token
 #### Optional
 `--input_format` the input format (i.e., 'biosample', 'dataset', 'file_id'; default: 'biosample') \
