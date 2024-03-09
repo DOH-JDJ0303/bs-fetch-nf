@@ -12,7 +12,9 @@
 
 ## Usage
 ### Step 1. Clone the repository 
-```git clone https://github.com/DOH-JDJ0303/bs-fetch-nf
+```
+git clone https://github.com/DOH-JDJ0303/bs-fetch-nf
+
 ```
 ### Step 2. Prepare the input file and save as a .csv
 Prepare a file containg a list of Illumina biosample names, dataset names, or file IDs. Each name or ID should be listed on a new line (see example below).
