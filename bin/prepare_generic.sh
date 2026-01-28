@@ -7,7 +7,7 @@ then
     echo ${version}
 else
     reads=$1
-    outdir=$2
+    outdir="${2%/}"
 
     echo ${reads} | tr -d '[] ' | tr ',' '\n' | sed 's/.*\///g' | sort | uniq > r_col
 
