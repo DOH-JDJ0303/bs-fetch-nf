@@ -5,6 +5,7 @@
 include { BS_FETCH_BIOSAMPLE } from '../../modules/local/bs_fetch_biosample'
 include { SUMMARIZE_IDS      } from '../../modules/local/summarize_ids'
 include { BS_FETCH_FILE_ID   } from '../../modules/local/bs_fetch_file_id'
+include { MERGE_LANES        } from '../../modules/local/merge_lanes'
 
 workflow FETCH_READS {
     take:
@@ -21,7 +22,7 @@ workflow FETCH_READS {
         BS_FETCH_BIOSAMPLE (
             samples
         )
-        ch_versions = ch_versions.mix(BS_FETCH_BIOSAMPLE.out.versions)
+        ch_versions = ch_versions.mix(BS_FETCH_BIOSAMPLE.out.versions.first())
 
         // Update input with file ids
         BS_FETCH_BIOSAMPLE
@@ -37,15 +38,42 @@ workflow FETCH_READS {
         )
     }
 
-    // Download by file ID
+    // Download by file ID (one task per file, i.e. per lane per read)
     BS_FETCH_FILE_ID (
         ch_input
     )
-    ch_versions = ch_versions.mix(BS_FETCH_FILE_ID.out.versions)
+    ch_versions = ch_versions.mix(BS_FETCH_FILE_ID.out.versions.first())
 
+    // Group lane files by sample and read direction: [ sample, 'R1', [ L001, L002, ... ] ]
     BS_FETCH_FILE_ID
         .out
         .reads
+        .flatten()
+        .map { fq ->
+            // Illumina naming: <sample>[_S<n>][_L<lane>]_R<1|2>[_001].fastq.gz
+            def m = fq.name =~ /^(.+?)(?:_S\d+)?(?:_L\d+)?_(R[12])(?:_\d+)?\.f(?:ast)?q\.gz$/
+            if (!m.matches()) {
+                error "Cannot determine sample name / read direction from '${fq.name}'. Expected <sample>_S<n>_L<lane>_R<1|2>_001.fastq.gz"
+            }
+            [ m.group(1), m.group(2), fq ]
+        }
+        .groupTuple(by: [0, 1])
+        // sort by file name so lanes are concatenated in the same order for R1 and R2 (keeps pairs in sync)
+        .map { sample, read, fqs -> [ sample, read, fqs.sort(false) { it.name } ] }
+        .set { ch_lanes }
+
+    //
+    // MODULE: Combine lanes into a single file per read direction
+    //
+    MERGE_LANES (
+        ch_lanes
+    )
+    ch_versions = ch_versions.mix(MERGE_LANES.out.versions.first())
+
+    MERGE_LANES
+        .out
+        .reads
+        .map { sample, read, fq -> fq }
         .collect()
         .set { reads }
 
