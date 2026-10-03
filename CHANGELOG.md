@@ -13,7 +13,7 @@ Initial release of nf-core/bsfetch, created with the [nf-core](https://nf-co.re/
 
 ### `Fixed`
 
-- `BS_FETCH_BIOSAMPLE` now downloads every FASTQ from the newest dataset for a biosample instead of only the first two files, so multi-lane samples are fetched completely.
+- `BS_FETCH_BIOSAMPLE` now reads `bs content biosample --format yaml` and keeps the newest file (by `DateCreated`) for each lane + read, instead of only the first two files, so multi-lane samples are fetched completely and re-sequenced lanes replace older ones.
 - Biosample name was missing from `bs-contents.csv` and the IDs were written to the wrong file name.
 - Malformed `versions.yml` heredocs that broke `CUSTOM_DUMPSOFTWAREVERSIONS`.
 
