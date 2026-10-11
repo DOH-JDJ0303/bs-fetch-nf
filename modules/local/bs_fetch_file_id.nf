@@ -22,6 +22,7 @@ process BS_FETCH_FILE_ID {
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":
-        bs-cli: $( bs -V | cut -f 2 -d ' ' | tr -d '\n\t\r ')
+        bs-cli: $( bs -V | cut -f 2 -d ' ' | tr -d '[:space:]')
+    END_VERSIONS
     '''
 }

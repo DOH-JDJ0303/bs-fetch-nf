@@ -15,6 +15,7 @@ process PREPARE_GENERIC {
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":
-        prepare_generic: $( prepare_generic.sh --version | tr -d '\n\t\r ')
+        prepare_generic: $( prepare_generic.sh --version | tr -d '[:space:]')
+    END_VERSIONS
     '''
 }

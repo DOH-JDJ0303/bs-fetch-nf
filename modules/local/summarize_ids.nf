@@ -13,7 +13,7 @@ process SUMMARIZE_IDS {
 
     shell: // This script is bundled with the pipeline, in nf-core/bsfetch/bin/
     '''
-    echo "biosample,file_id" > bs-contents.csv
-    cat !{files} >> bs_contents.csv
+    echo "biosample,file_id,file_name,date_created" > bs-contents.csv
+    cat !{files} >> bs-contents.csv
     '''
 }

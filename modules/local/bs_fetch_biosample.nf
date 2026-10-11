@@ -15,21 +15,59 @@ process BS_FETCH_BIOSAMPLE {
 
     shell: // This script is bundled with the pipeline, in nf-core/bsfetch/bin/
     '''
-    # get biosample file content
+    # get biosample file content as YAML (includes DateCreated for each file)
     bs content biosample \\
         --api-server=!{params.api_server} \\
         --access-token=!{params.access_token} \\
         -n !{biosample} \\
-        > content.txt
-    
-    # extract file IDs & add biosample name
-    cat content.txt | grep '.gz' | cut -f 2 -d ' ' | tr -d '\t ' | awk -v s=!{biosample} '{print a","$0}' > !{biosample}.csv
+        --format yaml \\
+        > content.yaml
 
-    # extract newest IDs
-    cat !{biosample}.csv | cut -f 2 -d ',' | sed -n 1,2p > newest.csv
+    # parse YAML -> biosample,file_id,file_name,date_created (FASTQs only)
+    awk -v s="!{biosample}" '
+        function flush() {
+            if (id != "" && name ~ /\\.f(ast)?q\\.gz$/) print s "," id "," name "," date
+            id = ""; name = ""; date = ""
+        }
+        /^- / { flush(); sub(/^- /, "  ") }
+        {
+            line = $0; sub(/^ +/, "", line)
+            key = line; sub(/:.*/, "", key)
+            val = line; sub(/^[^:]*: */, "", val); gsub(/"/, "", val)
+            if (key == "Id") id = val
+            else if (key == "Name") name = val
+            else if (key == "DateCreated") date = val
+        }
+        END { flush() }
+    ' content.yaml > !{biosample}.csv
+
+    if [ ! -s !{biosample}.csv ]
+    then
+        echo "ERROR: no FASTQ files found for biosample '!{biosample}'" >&2
+        exit 1
+    fi
+
+    # keep the newest file for each lane + read (e.g. L001_R1), so re-sequenced lanes
+    # replace older ones. The _S<n>_ index is ignored because it can differ between runs.
+    # sort: key, then DateCreated (newest first), then file ID (highest first) as a tie-breaker
+    awk -F ',' '{ k = $3; sub(/_S[0-9]+_/, "_", k); print k "," $4 "," $2 "," $2 "," $3 "," $4 }' !{biosample}.csv \\
+        | LC_ALL=C sort -t ',' -k1,1 -k2,2r -k3,3nr \\
+        | awk -F ',' '!seen[$1]++' \\
+        | cut -f 4- -d ',' \\
+        > newest.csv
+
+    # log what was dropped (visible in .command.err)
+    n_all=$(wc -l < !{biosample}.csv)
+    n_new=$(wc -l < newest.csv)
+    if [ ${n_all} -gt ${n_new} ]
+    then
+        echo "!{biosample}: kept ${n_new} newest of ${n_all} FASTQ files:" >&2
+        cat newest.csv >&2
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "!{task.process}":
-        bs-cli: $( bs -V | cut -f 2 -d ' ' | tr -d '\n\t\r ')
+        bs-cli: $( bs -V | cut -f 2 -d ' ' | tr -d '[:space:]')
+    END_VERSIONS
     '''
 }

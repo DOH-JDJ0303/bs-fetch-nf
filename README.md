@@ -52,7 +52,7 @@ nextflow run main.nf \
 
 ## Pipeline output
 This pipeline generates two main outputs:
-1.  The reads downloaded from BaseSpace. These are saved in a subdirectory of the specified output directory called `reads/`.
+1.  The reads downloaded from BaseSpace. These are saved in a subdirectory of the specified output directory called `reads/`. Samples sequenced across multiple lanes (e.g., `isolate1_S1_L001_R1_001.fastq.gz` ... `isolate1_S1_L004_R1_001.fastq.gz`) are concatenated in lane order into a single file per read direction, named `<sample>_R1_001.fastq.gz` and `<sample>_R2_001.fastq.gz`. With `--input_format biosample`, the newest file (by creation date) for each lane and read is downloaded, so re-sequenced lanes replace older ones.
 2.  A manifest file in the specified format saved in the specified output directory. \
 
 Note: There is currently only one manifest format supported (see example below). This format can be used for the CDC MycoSNP and PHoeNIx pipelines. \

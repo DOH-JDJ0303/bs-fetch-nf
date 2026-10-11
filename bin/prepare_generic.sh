@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="1.0"
+version="1.1"
 
 if [[ $1 == "--version" ]]
 then
@@ -11,7 +11,7 @@ else
 
     echo ${reads} | tr -d '[] ' | tr ',' '\n' | sed 's/.*\///g' | sort | uniq > r_col
 
-    cat r_col | sed -r 's/_S[0-9]+_L[0-9]+_R[12]_001.fastq.gz//g' > n_col
+    cat r_col | sed -r 's/(_S[0-9]+)?(_L[0-9]+)?_R[12]_001\.fastq\.gz$//' > n_col
 
     paste n_col r_col > all_reads
 
